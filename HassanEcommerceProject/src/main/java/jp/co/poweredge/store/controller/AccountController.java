@@ -32,6 +32,7 @@ import utility.SecurityUtility;
 @Controller
 public class AccountController {
 	//ログ出すために持ってきたオブジェクトです。消しても本アプリケーションと問題ないです
+	//ログ出すために持ってきたオブジェクトです。消しても本アプリケーションと問題ないです
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
