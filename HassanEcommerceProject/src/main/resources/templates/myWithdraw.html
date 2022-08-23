@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+<body class="d-flex flex-column">
+	<div th:replace="common/header :: navbar"> </div>
+
+	<div class="container page-content">
+    	<div class="row">
+	      <div class="col-md-4 col-lg-3">
+	       <div class="card">
+	         <div class="card-body text-center">
+	           <img src="/image/user/user.png" width="100" height="100" alt="User" class="rounded-circle mb-3">
+	           <h5 class="bold mb-0" th:text="${#strings.capitalize(user.username)}"></h5>
+	           <small class="text-secondary" th:text="'最後にログインしたのは '+${#dates.format(#dates.createNow(), 'MMM dd, yyyy')}"></small>
+	         </div>
+	         <div class="list-group list-group-flush">
+	           <a th:href="@{/my-profile}" class="list-group-item list-group-item-action"><i data-feather="user" class="mr-3"></i>アカウント情報ページ</a>
+	           <a th:href="@{/my-orders}" class="list-group-item list-group-item-action"><i data-feather="shopping-bag" class="mr-3"></i> 購入履歴</a>
+	           <a th:href="@{/my-address}" class="list-group-item list-group-item-action" ><i data-feather="map" class="mr-3"></i> 住所</a>
+	           <a th:href="@{/my-point}" class="list-group-item list-group-item-action"><i data-feather="trash" class="mr-3"></i>保有ポイント</a>
+	           <a th:href="@{/withdraw}" class="list-group-item list-group-item-action text-danger active" style="background-color:#020B4A;"><i data-feather="log-out" class="mr-3"></i> 退会手続き</a>
+	         </div>
+	        </div>
+	      </div>
+
+
+	  	<div class="col mt-3 mt-md-0">
+          <div class="card">
+            <div class="card-body">
+              <h4>退会手続きされますとすべてのサービスがご利用できなくなります。</h4><hr>
+              <h4>再度ご利用いただくには、新規登録が必要になります。</h4><hr>
+              <form th:action="@{/withdrawConfirm}" method="post">
+                  <div class="form-group">
+                    <label for="billingZip">本当に退会してよろしいでしょうか？</label>
+                    <button type="submit" class="btn btn-danger">退会をする</button>
+
+                    <!-- Button trigger modal -->
+					<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+					  Launch demo modal
+					</button> -->
+                  </div>
+              </form>
+
+            </div>
+          </div>
+         </div>
+        </div>
+	  </div>
+
+	  <!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Modal -->
+
+
+
+	<div th:replace="common/header :: footer"> </div>
+  	<div th:replace="common/header :: body-scripts"> </div>
+</body>
+</html>

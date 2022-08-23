@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+<body>
+	<div th:replace="adminHome :: navbarAdmin"> </div>
+
+
+	<div class="container page-content">
+  	<div class="shadow-lg p-4 mb-5 bg-white rounded">
+		<div class="row text-center bg-light">
+			<div class="col-sm-12 mt-2">
+				<h4>問い合わせ情報ページ</h4>
+			</div>
+		</div>
+		   <table id="table-article" class="table table-striped table-bordered table-hover">
+		   <thead class="thead-dark">
+		     <tr>
+		       <th>問い合わせID</th>
+		       <th>名前</th>
+		       <th>姓</th>
+		       <th>メールアドレス</th>
+		       <th>問い合わせ内容</th>
+		       <th>回答状況</th>
+		       <th>回答操作</th>
+		     </tr>
+		   </thead>
+			<tbody>
+		      <tr data-th-each="contact : ${contactlist}">
+		        <td th:text="${contact.id}"></td>
+		        <td th:text="${contact.firstName}"></td>
+		        <td th:text="${contact.lastName}"></td>
+		        <td th:text="${contact.email}"></td>
+		        <td th:text="${contact.contents}"></td>
+		        <!-- <td ><span class="badge badge-warning" th:text="${contact.answerstatus}"></span></td> -->
+		        <td ><div  th:switch="${contact.answerstatus}">
+					    	<span class="badge badge-warning" th:case="'未回答'" th:text="${contact.answerstatus}"></span>
+					    	<span class="badge badge-info" th:case="'回答済み'" th:text="${contact.answerstatus}"></span>
+					    </div></td>
+
+
+		        <td><a class="badge badge-success" th:href="@{/contact-complete?contactId=}+${contact.id}">回答済みにする</a></td>
+		     </tr>
+		   </tbody>
+		</table>
+	  </div>
+  	</div>
+	<div th:replace="common/header :: body-scripts"> </div>
+</body>
+</html>

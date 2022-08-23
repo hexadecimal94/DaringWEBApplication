@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+
+
+<body class="d-flex flex-column">
+  <div th:replace="common/header :: navbar"> </div>
+
+  <div class="container page-content">
+    <div class="card">
+      <div class="card-body">
+        <div class="text-center py-3">
+          <i data-feather="check-circle" class="text-success" width="48" height="48"></i>
+          <h1>ご注文ありがとうございました。</h1>
+          <h2>ご注文確定いたしました。</h2>
+          <p class="mb-0">
+            <span class="text-muted">注文ID: </span>
+            <span class="text-info">#ORD<span th:text="${order.id}"></span></span>
+          </p>
+          <p>
+            <span class="text-muted">合計金額: </span>
+            <span class="text-info">￥<span th:text="${order.orderTotal}"></span></span>
+          </p>
+          <p>配送予定日は<span th:text="${#dates.format(order.shippingDate, 'yyyy-MM-dd')}"></span></p>
+          <a th:href="@{/store}" class="btn btn-info rounded mb-3">買い物を続ける</a>
+          <a th:href="@{/order-detail?order=}+${order.id}" class="btn btn-primary rounded mb-3">注文履歴</a>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+
+  <div th:replace="common/header :: footer"> </div>
+  <div th:replace="common/header :: body-scripts"> </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+<body>
+	<!-- common header -->
+	<div th:replace="adminHome :: navbarAdmin"> </div>
+
+	<!-- Getting the username in the table as data -->
+	<div class="container page-content">
+	   <div class="shadow-lg p-4 mb-5 bg-white rounded">
+		<div class="row text-center">
+		    <div class="col-sm-12">
+		      <h3>顧客情報ページ</h3>
+		      <p>このページでは顧客のユーザ名、名前、苗字、メールアドレス、アカウントステータスなどご確認ください。</p>
+		    </div>
+		 </div>
+
+		<div class="row" >
+			<div class="col-12">
+				<table id="table-article" class="table table-striped table-bordered table-hover">
+				   <thead class="thead-dark">
+				     <tr>
+				       <th>ユーザID</th>
+				       <th>ユーザ名</th>
+		<!-- 		       <th>名</th>
+				       <th>姓</th> -->
+				       <th>メールアドレス</th>
+				       <th>現在のステータス</th>
+				       <th>ハッシュ化されたパースワード</th>
+				     </tr>
+				   </thead>
+					<tbody>
+					  <tr data-th-each="user : ${users}">
+					    <td th:text="${user.id}"></td>
+					    <td th:text="${user.username}"></td>
+			<!-- 		    <td th:text="${user.firstName}"></td>
+					    <td th:text="${user.lastName}"></td> -->
+					    <td th:text="${user.email}"></td>
+					    <td><div  th:switch="${user.accountstatus}">
+					    	<span class="badge badge-warning" th:case="null">退会した</span>
+					    	<span class="badge badge-info" th:case="'ACTIVE'" th:text="${user.accountstatus}"></span>
+					    </div>
+					    </td>
+					    <td th:text="${#strings.substring(user.password,6)}"></td>
+					    <!-- <td th:text="${user.password}"></td> -->
+			<!-- 	        <td><a th:href="@{/user/edit?id=}+${user.id}" class="badge badge-primary">ユーザ編集</a>
+				           <a th:href="@{/user/delete?id=}+${user.id}" class="badge badge-danger">ユーザ削除</a> </td>
+					    </tr> -->
+				  	</tbody>
+	  		    </table>
+			</div>
+		</div>
+
+
+	  </div>
+	</div>
+
+
+
+  	<div th:replace="common/header :: body-scripts"> </div>
+
+  <script>
+  	$(document).ready(function() {
+	    $('#table-article').DataTable({
+	    	stateSave: true
+	    });
+	} );
+  </script>
+</body>
+</html>

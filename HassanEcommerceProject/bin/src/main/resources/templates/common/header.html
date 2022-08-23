@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:fragment="common-header">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+
+  <style>
+  	body {
+		font-family: "MS Pゴシック" ;
+	}
+  </style>
+
+  <title>Poweredge shoes</title>
+  <link rel="icon" href="/image/circlelogo.png">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto|Roboto+Condensed|Roboto+Slab" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tables plugin -->
+  <link href="/css/datatables.min.css" rel="stylesheet">
+  <!-- Bootstrap tagsinput -->
+  <link href="/css/tagsinput.css" rel="stylesheet">
+  <!-- Simple pagination -->
+  <link href="/css/simplePagination.css" rel="stylesheet" />
+  <!-- Slick carousel -->
+  <link href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet" />
+  <link href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" rel="stylesheet" />
+  <!-- Custom styles -->
+  <link href="/css/style.css" rel="stylesheet">
+
+  <!-- Feather icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+
+</head>
+
+
+<body>
+  <div th:fragment="navbar">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm">
+      <a class="navbar-brand" th:href="@{/}"><img width="60" height="35" src="/image/circlelogo.png"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto font-weight-bold">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}"> ホームページ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/store}"> ストア </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/shopping-cart/cart}">カート
+            <span class="badge badge-info badge-pill" style="vertical-align: top;" th:text="${shoppingCartItemNumber} > 0 ? ${shoppingCartItemNumber}"></span></a>
+          </li>
+        </ul>
+
+
+		<!-- 認証されたユーザネームを表示するdiv -->
+        <div class="collapse navbar-collapse" id="navbarCollapse" sec:authorize="${isAuthenticated()}">
+        	<span class="bagde ">ようこそ:</span>
+	  		<span sec:authentication="principal.username" class="bagde " style="color : black" > User</span>
+	  		<span class="bagde ">様</span>
+		</div>
+
+        <ul class="navbar-nav ml-auto font-weight-bold">
+
+          <li class="nav-item">
+          	<!-- 誰でも見られるLoginURL -->
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">ログイン・新規登録</a>
+          </li>
+          <li class="nav-item align-items-end" sec:authorize="isAuthenticated()" >
+          	<!-- ユーザネームがguest だったらアカウントページ表示しない -->
+          	<div class="nav-link" th:if="${#authentication.getPrincipal().getUsername()!= 'guest'}">
+			   <a th:href="@{/my-profile}">アカウント詳細</a>
+			</div>
+          </li>
+          <li class="nav-item">
+          	<!-- 認証した人たちだけ見られる -->
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">ログアウト <i data-feather="log-out" class="mr-3"></i></a>
+          </li>
+          <li class="nav-item">
+            <!-- Admin のrole 持っている人たちだけ見られる -->
+            <a class="nav-link text-dark" sec:authorize="hasRole('ADMIN')" th:href="@{/article/article-list}"> アドミンページ</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+  </div>
+
+  <div th:fragment="footer">
+    <div class="footer mt-5">
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-sm-6 col-lg-3 text-center pr-5">
+            <h5 class="font-weight-bold">会員登録すると10%OFFクーポンプレゼント</h5>
+            <p>メールアドレス登録してセールキャンペーン情報を取得しよう</p>
+            <form>
+              <div class="form-group">
+                <input type="email" class="form-control rounded-pill text-center footer-input" placeholder="ここにメールアドレス">
+              </div>
+              <button type="button" class="btn btn-primary btn-block rounded-pill">SUBSCRIBE</button>
+            </form>
+          </div>
+          <div class="col-6 col-lg-3 pl-3">
+            <h6 class="font-weight-bold">カスタマーサポート</h6>
+            <div class="list-group list-group-flush list-group-no-border list-group-sm">
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">ヘルプセンター</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">商品の買い方</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">商品配送について</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">商品の変換の方法</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">決済方法</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">商品到着まで</a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3 pl-3">
+            <h6 class="font-weight-bold">Poweredge shoes</h6>
+            <div class="list-group list-group-flush list-group-no-border list-group-sm">
+              <a href="/contactus" class="list-group-item list-group-item-action">お問い合わせ</a>
+              <a href="https://www.poweredge.co.jp/" class="list-group-item list-group-item-action">株式会社パワーエッジについて</a>
+              <a href="https://www.poweredge.co.jp/privacypolicy/" class="list-group-item list-group-item-action">利用規約について</a>
+              <a href="https://www.poweredge.co.jp/privacypolicy/" class="list-group-item list-group-item-action">プライバシーポリシー</a>
+              <a href="https://www.poweredge.co.jp/company/history/" class="list-group-item list-group-item-action">株式会社パワーエッジの歩み</a>
+              <a href="javascript:void(0)" class="list-group-item list-group-item-action">当社のサービスについて</a>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3 pl-3">
+            <h6 class="font-weight-bold ">Developer</h6>
+            <div class="list-group list-group-flush list-group-no-border list-group-sm">
+              <span class="list-group-item"><strong>HASSAN MD NAZMUL</strong></span>
+              <span class="list-group-item"><strong>電話番号 : </strong> 070-2154-4047</span>
+              <span class="list-group-item"><strong>メールアドレス : </strong> nazmul.ntashiq@gmail.com</span>
+              <span class="list-group-item"><strong>勤務先 : </strong> 株式会社パワーエッジ</span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">Copyright © 2022 Poweredge All rights reserved</div>
+  </div>
+
+
+  <div th:fragment="body-scripts">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+      window.jQuery
+          || document
+              .write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')
+    </script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/datatables.min.js"></script>
+    <script src="/js/tagsinput.js"></script>
+    <script>feather.replace()</script>
+    <script type="text/javascript" src="/js/jquery.simplePagination.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+    //prevent multiple form submission
+    $(function() {
+      $('form').submit(function(){
+        $("button[type='submit']", this)
+          .text("少々お待ちください...")
+          .attr('disabled', 'disabled');
+        return true;
+      });
+    });
+    </script>
+
+  </div>
+
+</body>
+
+</html>

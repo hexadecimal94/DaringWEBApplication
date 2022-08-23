@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+
+
+<body class="d-flex flex-column">
+  <div th:replace="common/header :: navbar"> </div>
+
+  <div class="container page-content">
+    <div class="row">
+      <div class="col-md-4 col-lg-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <img src="/image/user/user.png" width="100" height="100" alt="User" class="rounded-circle mb-3">
+            <h5 class="bold mb-0" th:text="${#strings.capitalize(user.username)}"></h5>
+            <small class="text-secondary" th:text="'最後にログインしたのは '+${#dates.format(#dates.createNow(), 'MMM, dd, yyyy')}"></small>
+          </div>
+          <div class="list-group list-group-flush">
+            <a th:href="@{/my-profile}" class="list-group-item list-group-item-action" ><i data-feather="user" class="mr-3"></i> アカウント情報ページ</a>
+            <a th:href="@{/my-orders}" class="list-group-item list-group-item-action" ><i data-feather="shopping-bag" class="mr-3"></i> 購入履歴</a>
+            <a th:href="@{/my-address}" class="list-group-item list-group-item-action" ><i data-feather="map" class="mr-3"></i> 住所</a>
+            <a th:href="@{/my-point}" class="list-group-item list-group-item-action  active" style="background-color:#020B4A;"><i data-feather="trash" class="mr-3"></i>保有ポイント</a>
+            <a th:href="@{/withdraw}" class="list-group-item list-group-item-action text-danger"><i data-feather="log-out" class="mr-3"></i> 退会</a>
+          </div>
+        </div>
+      </div>
+
+		<!-- アカウント情報入力してボタン押したら結果をお知らせするdiv -->
+       <div class="col mt-3 mt-md-0">
+
+          <div class="card">
+            <div class="card-body text-center">
+              <h3>現在、保有ポイント</h3><hr>
+              <h4 class="font-weight-bold"th:text="'累計ポイント: '+${currentpoint}+ ' p'"></h4>
+              <a class="btn btn-success"href="/shoppingbypoint">ポイントで買い物する</a>
+
+            </div>
+            <div class="card-body text-center">
+              <h5>ポイント履歴</h5><hr>
+              <table id="table-article" class="table table-striped table-bordered table-hover">
+			    <thead class="thead-dark">
+			      <tr>
+			        <th>注文日(dd-MM-yyyy)</th>
+			        <th>注文合計</th>
+			        <th>ポイント</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr th:each="order: ${orders}">
+			      	<td class="text-center" th:text="${#dates.format(order.orderDate,'yyyy-MM-dd')}"></td>
+			      	<td class="text-right">￥<span th:text="${order.orderTotal}"></span></td>
+			      	<td class="text-right"><span th:text="${order.orderTotal/100}+ 'p'"></span></td>
+			      </tr>
+			    </tbody>
+			   </table>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </div> <!--  end container -->
+
+  <div th:replace="common/header :: footer"> </div>
+  <div th:replace="common/header :: body-scripts"> </div>
+
+  <script>
+  	function checkPasswordMatch() {
+		var password = $("#txtNewPassword").val();
+		var confirmPassword = $("#txtConfirmPassword").val();
+		if (password == "" && confirmPassword == "") {
+			$("#updateUserInfoButton").attr("disabled", false);
+		} else {
+			if (password != confirmPassword) {
+				$("#updateUserInfoButton").attr("disabled", true);
+				$("#txtConfirmPassword").addClass("is-invalid");
+			} else {
+				$("#updateUserInfoButton").attr("disabled", false);
+				$("#txtConfirmPassword").removeClass("is-invalid");
+			}
+		}
+	}
+
+  	$(document).ready(function(){
+  		$("#txtConfirmPassword").keyup(checkPasswordMatch);
+  		$("#txtNewPassword").keyup(checkPasswordMatch);
+    	$('#updateUserInfoButton').click(function() {
+    		console.log("clickeo")
+    		if ($('#txtNewPassword').val() == '') {
+    			$('#profileForm').submit()
+    		} else {
+    			$('#passwordModal').modal('show');
+    		}
+    	 });
+    });
+
+
+
+  </script>
+</body>
+</html>

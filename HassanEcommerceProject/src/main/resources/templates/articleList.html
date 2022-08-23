@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+<body>
+
+  <div th:replace="adminHome :: navbarAdmin"> </div>
+
+  <div class="container page-content ">
+	<div class="row bg-white text-white border rounded shadow-lg p-1">
+	    <div class="col-sm-2 mt-4 mb-4 ml-4 text-center border rounded" style="background-color:#45103E">
+	      <h3 class="mt-2 ">総商品数</h3>
+	      <h3 th:text="${articles.size()}"></h3>
+	    </div>
+		<div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#45103E">
+      		<h3 class="mt-3">総ブランド数</h3>
+      		<h3 th:text="${brandsize.size()}"></h3>
+		</div>
+		<div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#45103E">
+      		<h3 class="mt-3">総サイズ数</h3>
+      		<h3 th:text="${sizes.size()}"></h3>
+		</div>
+		<div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#45103E">
+      		<h3 class="mt-3">総カテゴリー数</h3>
+      		<h3 th:text="${categories.size()}"></h3>
+		</div>
+	</div>
+
+	<br>
+
+	<!-- Second Row for Article stock metrics -->
+	<div class="row bg-white text-white border rounded shadow-lg p-1">
+	    <div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#196C60">
+	       <h6 class="mt-3">在庫5点以下の商品</h6>
+	       <a class="btn btn-warning mb-2 font-weight-bold" href="/stockless5list" th:text="${stockless5list.size()}"></a>
+	    </div>
+		<div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#196C60">
+      		<h6 class="mt-3">在庫5-20点残りの商品</h6>
+      		<a class="btn btn-warning mb-2 font-weight-bold" href="/stockless5to20list" th:text="${stockless5to20.size()}"></a>
+
+		</div>
+		<div class="col-sm-3 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#196C60">
+      		<h6 class="mt-3">在庫20-40点残りの商品</h6>
+      		<a class="btn btn-warning mb-2 font-weight-bold" href="/stockless20to40list" th:text="${stockless20to40.size()}"></a>
+
+		</div>
+		<div class="col-sm-2 mt-4 mb-4 ml-3 text-center border rounded" style="background-color:#196C60">
+      		<h6 class="mt-3">在庫40点以上の商品</h6>
+      		<a class="btn btn-warning mb-2 font-weight-bold" href="/stockgreaterthan40list" th:text="${stockgreaterthan40.size()}"></a>
+
+		</div>
+	</div>
+	<br>
+
+
+    <table id="table-article" class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>商品ID</th>
+        <th>商品タイトル</th>
+        <th>カテゴリー</th>
+        <th>ブランド</th>
+        <th>サイズ</th>
+        <th>価格</th>
+        <th>在庫</th>
+        <th>商品操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-th-each="article : ${articles}">
+        <td th:text="${article.id}"></td>
+        <td th:text="${article.title}"></td>
+        <td><div style="display:flex;"><span th:each="item : ${article.categories}"
+            th:text="${item.getName()}" class="badge badge-secondary mt-1 mr-1" ></span></div></td>
+        <td><div style="display:flex;"><span th:each="item : ${article.brands}"
+            th:text="${item.getName()}" class="badge badge-secondary mt-1 mr-1" ></span></div></td>
+        <td><div style="display:flex;"><span th:each="item : ${article.sizes}"
+            th:text="${item.getValue()}" class="badge badge-secondary mt-1 mr-1" ></span></div></td>
+        <td th:text="${article.price}"></td>
+        <td th:text="${article.stock}"></td>
+
+
+
+        <td><a th:href="@{/article/edit?id=}+${article.id}" class="badge badge-primary">EDIT</a>
+            <a th:href="@{/article/delete?id=}+${article.id}" class="badge badge-danger">DELETE </a> </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+
+
+  <div th:replace="common/header :: body-scripts"> </div>
+
+  <script>
+  	$(document).ready(function() {
+	    $('#table-article').DataTable({
+	    	stateSave: true
+	    });
+	} );
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+<body>
+
+  <div th:replace="adminHome :: navbarAdmin"> </div>
+
+  <div class="container page-content">
+  	<div class="shadow-lg p-4 mb-5 bg-white rounded">
+		<div class="row text-center bg-light">
+			<div class="col-sm-12 mt-2">
+				<h4>仕入れ情報ページ</h4>
+			</div>
+		</div>
+		   <table id="table-article" class="table table-striped table-bordered table-hover">
+		   <thead class="thead-dark">
+		     <tr>
+		       <th>商品ID</th>
+		       <th>商品タイトル</th>
+		       <th>価格</th>
+		       <th>在庫</th>
+		       <th>仕入れ日</th>
+		       <th>商品操作</th>
+		       <th>商品仕入れ操作</th>
+		     </tr>
+		   </thead>
+			<tbody>
+		      <tr data-th-each="purchase : ${purchaselist}">
+		        <td th:text="${purchase.articleId}"></td>
+		        <td th:text="${purchase.title}"></td>
+		        <td th:text="${purchase.purchasePrice}"></td>
+		        <td th:text="${purchase.purchaseQty}"></td>
+		        <td th:text="${purchase.purchaseDate}"></td>
+		        <td><a class="badge badge-success" th:href="@{/new-purchase?articleId=}+${purchase.articleId}">商品仕入れる</a></td>
+
+		        <td><!-- <a th:href="@{/purchase/edit?id=}+${purchase.id}" class="badge badge-primary">EDIT</a> -->
+		           <a class="btn btn-warning" th:href="@{/inventory?id=}+${purchase.articleId}">棚卸ページ</a></td>
+		     </tr>
+		   </tbody>
+		</table>
+	  </div>
+  	</div>
+
+  <div th:replace="common/header :: body-scripts"></div>
+  <script>
+  	$(document).ready(function() {
+	    $('#table-article').DataTable({
+	    	stateSave: true
+	    });
+	} );
+  </script>
+  <!-- <div th:replace="common/header :: body-scripts"> </div> -->
+
+</body>
+</html>

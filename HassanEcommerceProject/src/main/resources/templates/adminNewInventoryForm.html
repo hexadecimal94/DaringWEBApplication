@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml" xmlns:sec="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+</head>
+<body>
+	<div th:replace="adminHome :: navbarAdmin"> </div>
+
+	<div class="container page-content ">
+		<div class="shadow-lg p-4 mb-5 bg-white rounded">
+			<div class="row ">
+				<div class="col-sm-12">
+					<h5 >仕入れテーブル</h5>
+				</div>
+			</div>
+			<table id="table-article" class="table table-striped table-bordered table-hover text-center">
+			    <thead class="thead-dark">
+			      <tr>
+			        <th>商品Id</th>
+	        		<th>商品仕入れ日</th>
+	        		<th>商品仕入れ数</th>
+	        		<th>商品タイトル</th>
+	        		<th>1点あたり商品仕入れ値段</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			    	<tr data-th-each="purchase : ${purchaseListWithArticleIdandDate}">
+			    		<td th:text="${purchase.articleId}"></td>
+			    		<td th:text="${purchase.purchaseDate}"></td>
+			    		<td th:text="${purchase.purchaseQty}"></td>
+			    		<td th:text="${purchase.title}"></td>
+			    		<td th:text="${purchase.purchasePrice}"></td>
+			    </tbody>
+		    </table>
+		    <div class="row text-center">
+				<div class="col-sm-12">
+					<h6 >この商品の----の仕入れ数と仕入れ日、仕入れ値段など確認できます。</h6>
+				</div>
+			</div>
+    	</div>
+      </div>
+    <div class="container page-content ">
+    	<div class="shadow-lg p-4 mb-5 bg-white rounded">
+			<div class="row ">
+				<div class="col-sm-12">
+					<h5 >売上テーブル</h5>
+				</div>
+			</div>
+			<table id="table-article" class="table table-striped table-bordered table-hover text-center ">
+			    <thead class="thead-dark">
+			      <tr >
+			        <th>商品Id</th>
+	        		<th>注文日</th>
+	        		<th>注文数</th>
+	        		<th>1点あたり売り値段</th>
+	        		<th>注文数＊売り値段</th>
+
+			      </tr>
+			    </thead>
+			    <tbody>
+			    	<tr data-th-each="sale : ${finalsaleListwithDateBetween}">
+			    		<td th:text="${sale.articleId}"></td>
+			    		<td th:text="${sale.orderDate}"></td>
+			    		<td th:text="${sale.qty}"></td>
+			    		<td th:text="${articlePrice}"></td>
+			    		<!-- <td th:with="var=${articlePrice * sale.qty}" th:text="${var}"></td> -->
+			    </tbody>
+		    </table>
+		    <div class="row text-center">
+				<div class="col-sm-12">
+					<h6 th:text="'この商品の'+${inventory.startDate}+'から'+${inventory.endDate}+'まで売れた数と合計売上と注文日など確認できます'"></h6>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 border rounded">
+				<div class="contact-info ">
+					<h2 class="bg-light">棚卸</h2>
+				</div>
+			</div>
+			<div class="col-md-6 mt-4 mb-4">
+				<form th:action="@{/inventory/new-form}" th:object="${inventory}" method="post" enctype="multipart/form-data">
+					<div class="contact-form " >
+						<div class="form-group ">
+<!-- 						  <label class="control-label col-sm-4">商品ID</label>
+						  <div class="col-sm-10" data-th-each="inventory : ${inventoryList}">
+						  		<input type="text" th:field="*{articleId}" >
+						  	INPUT0
+						  </div> -->
+						</div>
+						<div class="form-group ">
+						  <label class="control-label col-sm-4">開始日</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT1 -->
+							<input th:field="*{startDate}" type="text" class="form-control" placeholder="開始日を入力してください">
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="control-label col-sm-4" >締め日</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT2 -->
+							<input th:field="*{endDate}" type="text" class="form-control" placeholder="締め日を入力してください" >
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="control-label col-sm-4" >合計仕入れ数</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT3 -->
+							<input type="text" class="form-control" placeholder="合計仕入れ数を入力してください" >
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="control-label col-sm-4" >合計売り数</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT4 -->
+							<input type="text" class="form-control" placeholder="合計売り数を入力してください" >
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="control-label col-sm-4" >ダメになった商品数</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT5 -->
+							<input type="text" class="form-control" placeholder="残り在庫数を入力してください" >
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="control-label col-sm-4" >残り在庫</label>
+						  <div class="col-sm-10">
+
+						  	<!-- INPUT6 -->
+							<input type="text" class="form-control" placeholder="残り在庫数を入力してください" >
+						  </div>
+						</div>
+
+						<div class="form-group">
+						  <div class="col-sm-offset-2 col-sm-10 text-center">
+							<button type="submit" class="btn btn-secondary">このデータ棚卸テーブルに保存する</button>
+						  </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="common/header :: body-scripts"> </div>
+</body>
+</html>

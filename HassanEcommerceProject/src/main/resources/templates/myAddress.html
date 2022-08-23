@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header" />
+
+
+<body class="d-flex flex-column">
+  <div th:replace="common/header :: navbar"> </div>
+
+  <div class="container page-content">
+    <div class="row">
+
+       <div class="col-md-4 col-lg-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <img src="/image/user/user.png" width="100" height="100" alt="User" class="rounded-circle mb-3">
+            <h5 class="bold mb-0" th:text="${#strings.capitalize(user.username)}"></h5>
+            <small class="text-secondary" th:text="'最後にログインしたのは '+${#dates.format(#dates.createNow(), 'MMM dd, yyyy')}"></small>
+          </div>
+          <div class="list-group list-group-flush">
+            <a th:href="@{/my-profile}" class="list-group-item list-group-item-action"><i data-feather="user" class="mr-3"></i>アカウント情報ページ</a>
+            <a th:href="@{/my-orders}" class="list-group-item list-group-item-action"><i data-feather="shopping-bag" class="mr-3"></i> 購入履歴</a>
+            <a th:href="@{/my-address}" class="list-group-item list-group-item-action active" style="background-color:#020B4A;"><i data-feather="map" class="mr-3"></i> 住所</a>
+            <a th:href="@{/my-point}" class="list-group-item list-group-item-action "><i data-feather="trash" class="mr-3"></i>保有ポイント</a>
+            <a th:href="@{/withdraw}" class="list-group-item list-group-item-action text-danger"><i data-feather="log-out" class="mr-3"></i> 退会</a>
+          </div>
+        </div>
+      </div>
+
+       <div class="col mt-3 mt-md-0">
+          <div class="card">
+            <div class="card-body">
+              <h3>住所</h3><hr>
+              <form th:action="@{/update-user-address}" method="post">
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="billingAddress">市区町村・町名・番地</label>
+                    <input type="text" class="form-control" th:name="streetAddress" th:value="${user?.address?.streetAddress}">
+                  </div>
+                  <div class="form-group col-6 col-sm-5">
+                    <label for="billingCountry">国名</label>
+                    <input type="text" class="form-control" th:name="country" th:value="${user?.address?.country}">
+
+                  </div>
+                  <div class="form-group col-6 col-sm-5">
+                    <label for="billingCity">都道府県</label>
+                    <input type="text" class="form-control"   th:name="city" th:value="${user?.address?.city}">
+                  </div>
+                  <div class="form-group col-3 col-sm-2">
+                    <label for="billingZip">郵便番号</label>
+                    <input type="number" class="form-control" th:name="zipCode" th:value="${user?.address?.zipCode}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">住所をアップデートする</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div> <!--  end container -->
+
+  <div th:replace="common/header :: footer"> </div>
+
+
+  <div th:replace="common/header :: body-scripts"> </div>
+</body>
+</html>
